@@ -1,3 +1,7 @@
+# Authors: Justin Chen, Justin Ferber, Joseph Stefanoni
+# CPE 462 Final Project
+# Description: This program allows users to make various image enhancements to an image they input
+
 import cv2 as cv
 import sys
 import numpy as np
@@ -63,7 +67,10 @@ def main():
                 print("z")
             case "7":
                 newImage = prevImage.copy()
+                windowTitle = "Previous Image"
+                print("Reversed last step.")
             case "8":
+                print("Exiting program...")
                 break
             case "9":
                 fileName = input("Enter the file name to save the image to (do not include extension): ")
