@@ -12,7 +12,7 @@ def showImage(windowTitle, newImage):
     cv.waitKey(0)
     cv.destroyAllWindows()
 
-def main():
+def main(): # Run with "python main.py imageName"
     if (len(sys.argv) != 2):
         print("Usage: python main.py <input_image>")
         exit()
@@ -25,7 +25,7 @@ def main():
     windowTitle = "Input Image"
     while True:
         showImage(windowTitle, newImage)
-        userChoice = input("What type of image processing would you like to do (just enter the number)?\n1. Gaussian Blur\n2. Speckle Noise\n3. Adjust Contrast/Brightness\n4. Sharpen Image\n5. Adjust Saturation\n6. Placeholder\n7. Reverse Last Step (only works for 1 step)\n8. Exit\n9. Save Image to File\nEnter choice: ")
+        userChoice = input("What type of image processing would you like to do (just enter the number)?\n1. Gaussian Blur\n2. Speckle Noise\n3. Adjust Contrast/Brightness\n4. Sharpen Image\n5. Adjust Saturation\n6. Apply Bilateral Filter (smoothes image & preserves edges)\n7. Adjust Hue\n8. Reverse Last Step (only works for 1 step)\n9. Exit\n10. Save Image to File\nEnter choice: ")
         match userChoice:
             case "1":
                 blurScale = int(input("Enter the blur scale (must be an odd number): "))
@@ -39,7 +39,7 @@ def main():
             case "3":
                 try:
                     alpha = float(input("Enter the alpha value [0-3] (0-1 lowers contrast, 1-3 brightens it): "))
-                    beta = int(input("Enter the beta value [-100-100] (below 0 lowers brightness, positive increase brightness): "))
+                    beta = int(input("Enter the beta value [-100 - 100] (below 0 lowers brightness, positive increase brightness): "))
                     prevImage = newImage.copy()
                     newImage = cv.convertScaleAbs(newImage, alpha=alpha, beta=beta)
                     windowTitle = "Contrast/Brightness Adjustment"
@@ -64,15 +64,28 @@ def main():
                 newImage = cv.cvtColor(hsv_image, cv.COLOR_HSV2BGR)
                 windowTitle = "Adjust Saturation"
             case "6":
-                print("z")
+                prevImage = newImage.copy()
+                print("The diameter of each pixel neighborhood. Larger values means further pixels will influence each other.")
+                diameter = int(input("Enter diameter (1-10): "))
+                print("The sigma space controls the filter strength based on color differences. Larger values means that colors further apart will be mixed together.")
+                sigColor = int(input("Enter sigma color (10-150): "))
+                print("The sigma space controls the filter strength based on spatial differences. Larger values means that colors further apart will influence each other more.")
+                sigSpace = int(input("Enter sigma space (10-150): "))
+                newImage = cv.bilateralFilter(newImage, d = diameter, sigmaColor = sigColor, sigmaSpace = sigSpace)
+                windowTitle = "Bilateral Filter"
             case "7":
+                hsv_image = cv.cvtColor(newImage, cv.COLOR_BGR2HSV)
+                hue_shift = int(input("Enter the number of degrees of the hue shift (-179 - 179): "))
+                hsv_image[:, :, 0] = (hsv_image[:, :, 0] + hue_shift) % 180
+                newImage = cv.cvtColor(hsv_image, cv.COLOR_HSV2BGR)
+            case "8":
                 newImage = prevImage.copy()
                 windowTitle = "Previous Image"
                 print("Reversed last step.")
-            case "8":
+            case "9":
                 print("Exiting program...")
                 break
-            case "9":
+            case "10":
                 fileName = input("Enter the file name to save the image to (do not include extension): ")
                 while os.path.exists(fileName + ".jpg"):
                     print("File already exists. Please enter a different file name.")
