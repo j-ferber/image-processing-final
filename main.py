@@ -29,7 +29,7 @@ def main(): # Run with "python main.py imageName"
     windowTitle = "Input Image"
     while True:
         showImage(windowTitle, newImage)
-        userChoice = input("What type of image processing would you like to do (just enter the number)?\n1. Gaussian Blur\n2. Speckle Noise\n3. Adjust Contrast/Brightness\n4. Sharpen Image\n5. Adjust Saturation\n6. Apply Bilateral Filter (smoothes image & preserves edges)\n7. Adjust Hue\n8. Reverse Last Step (only works for 1 step)\n9. Exit\n10. Save Image to File\nEnter choice: ")
+        userChoice = input("\nWhat type of image processing would you like to do (just enter the number)?\n1. Gaussian Blur\n2. Speckle Noise\n3. Adjust Contrast/Brightness\n4. Sharpen Image\n5. Adjust Saturation\n6. Apply Bilateral Filter (smoothes image & preserves edges)\n7. Adjust Hue\n8. Reverse Last Step (only works for 1 step)\n9. Exit\n10. Save Image to File\nEnter choice: ")
         match userChoice:
             case "1":
                 blurScale = int(input("Enter the blur scale (must be an odd number): "))
@@ -43,7 +43,6 @@ def main(): # Run with "python main.py imageName"
                 intensity = float(input("Enter intensity value (0-100): "))
                 intensity /= 100.0
                 img_array = np.array(newImage)
-                #speckle_noise = np.zeros_like(img_array)
                 speckle_noise = [[[False for _ in range(img_array.shape[2])] for _ in range(img_array.shape[1])] for _ in range(img_array.shape[0])]
                 for i in range(img_array.shape[0]):
                   for j in range(img_array.shape[1]):
