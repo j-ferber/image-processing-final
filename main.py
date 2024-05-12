@@ -14,11 +14,15 @@ def showImage(windowTitle, newImage):
 
 def main(): # Run with "python main.py imageName"
     if (len(sys.argv) != 2):
-        print("Usage: python main.py <input_image>")
+      print("Argument for image was not inputted.")
+      input_image = input("Please enter the image path: ")
+    else:
+      input_image = sys.argv[1]
+    try:
+      image = cv.imread(input_image)
+    except:
+        print("Could not find file. Exiting...")
         exit()
-    input_image = sys.argv[1]
-
-    image = cv.imread(input_image)
     image = cv.resize(image, (800, 600))
     newImage = image.copy()
     prevImage = image.copy()
@@ -37,11 +41,18 @@ def main(): # Run with "python main.py imageName"
             case "2":
                 prevImage = newImage.copy()
                 intensity = float(input("Enter intensity value (0-100): "))
-                intensity /= 100
+                intensity /= 100.0
                 img_array = np.array(newImage)
-                spackle_noise = np.random.rand(*img_array.shape) < intensity
+                #speckle_noise = np.zeros_like(img_array)
+                speckle_noise = [[[False for _ in range(img_array.shape[2])] for _ in range(img_array.shape[1])] for _ in range(img_array.shape[0])]
+                for i in range(img_array.shape[0]):
+                  for j in range(img_array.shape[1]):
+                    for k in range(img_array.shape[2]):
+                      rand_val = np.random.rand()
+                      if rand_val < intensity:
+                        speckle_noise[i][j][k] = True
                 noisy_image = np.copy(img_array)
-                noisy_image[spackle_noise] = 255
+                noisy_image[speckle_noise] = 255
                 newImage = noisy_image
                 print("Adding speckle noise to the image...")
             case "3":
