@@ -85,7 +85,7 @@ def main(): # Run with "python main.py imageName"
                 prevImage = newImage.copy()
                 print("The diameter of each pixel neighborhood. Larger values means further pixels will influence each other.")
                 diameter = int(input("Enter diameter (1-10): "))
-                print("The sigma space controls the filter strength based on color differences. Larger values means that colors further apart will be mixed together.")
+                print("The sigma color controls the filter strength based on color differences. Larger values means that colors further apart will be mixed together.")
                 sigColor = int(input("Enter sigma color (10-150): "))
                 print("The sigma space controls the filter strength based on spatial differences. Larger values means that colors further apart will influence each other more.")
                 sigSpace = int(input("Enter sigma space (10-150): "))
