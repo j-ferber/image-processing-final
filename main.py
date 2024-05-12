@@ -35,6 +35,14 @@ def main(): # Run with "python main.py imageName"
                 newImage = cv.GaussianBlur(newImage, (blurScale, blurScale), 0)
                 windowTitle = "Gaussian Blur"
             case "2":
+                prevImage = newImage.copy()
+                intensity = float(input("Enter intensity value (0-100): "))
+                intensity /= 100
+                img_array = np.array(newImage)
+                spackle_noise = np.random.rand(*img_array.shape) < intensity
+                noisy_image = np.copy(img_array)
+                noisy_image[spackle_noise] = 255
+                newImage = noisy_image
                 print("Adding speckle noise to the image...")
             case "3":
                 try:
